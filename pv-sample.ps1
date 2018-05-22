@@ -7,6 +7,7 @@ iwr https://chocolatey.org/install.ps1 -UseBasicParsing | iex
 choco feature enable -n allowEmptyChecksums
 
 winrm quickconfig -force
+timeout /t 10
 winrm set winrm/config/service/auth @{Basic="true"}
 winrm set winrm/config/service @{AllowUnencrypted="true"}
 winrm set winrm/config/client/auth @{Basic="true"}
