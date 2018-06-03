@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -x
 pip install --upgrade pip
 pip uninstall -y urllib3
 yum install -y epel-release
@@ -30,6 +31,7 @@ sed -i "s|.*secret_key.*|secret_key=${awxsecret}|g" inventory
 
 ansible-playbook -i inventory install.yml -vv
 
+sleep 30
 docker exec -it awx_task_1 bash -c "pip install softlayer awscli python-nmap"
 
-yum update -y
+#yum update -y
