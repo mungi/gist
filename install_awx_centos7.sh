@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 set -x
-pip install --upgrade pip
+easy_install pip
 pip uninstall -y urllib3
 yum install -y epel-release
 yum install -y https://centos7.iuscommunity.org/ius-release.rpm
