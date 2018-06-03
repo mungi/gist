@@ -31,7 +31,6 @@ sed -i "s|.*secret_key.*|secret_key=${awxsecret}|g" inventory
 
 ansible-playbook -i inventory install.yml -vv
 
-sleep 30
-docker exec -it awx_task_1 bash -c "pip install softlayer awscli python-nmap"
+docker exec awx_task_1 bash -c "pip install softlayer awscli python-nmap"
 
 #yum update -y
