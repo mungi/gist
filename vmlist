@@ -24,7 +24,7 @@ try:
     vmlist.align['Location'] = 'l'
     vmlist.align['Hostname'] = 'r'
     vmlist.align['Domain'] = 'l'
-    print vmlist.get_string(sortby='Location')
+    print (vmlist.get_string(sortby='Location'))
 
 except SoftLayer.SoftLayerAPIError as e:
-    print("Error. " % (e.faultCode, e.faultString))
+    print ("Error. " % (e.faultCode, e.faultString))
