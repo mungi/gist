@@ -16,7 +16,6 @@ try:
 
     vmlist = PrettyTable(['Location', 'ServerId', 'Hostname', 'Domain', 'CPU', 'Memory', 'PublicIP', 'PrivateIP', 'Password', 'OS', 'Transaction'])
     for vm in vms:
-        print (vm)
         location = vm['location'].get('pathString') if vm.get('location') else '-'
         passwd = vm['operatingSystem'].get('passwords')[0].get('password') if vm.get('operatingSystem') else '-'
         #osVer = vm['operatingSystem'].get('softwareLicense').get('softwareDescription').get('longDescription') if vm.get('operatingSystem') else '-'
