@@ -4,10 +4,6 @@ from prettytable import PrettyTable
 
 client = SoftLayer.Client()
 accountClient = client['SoftLayer_Account']
-''' Env. variables for credential
-export SL_USERNAME=xxxxxx
-export SL_API_KEY=xxxxxx
-'''
 
 try:
     maskval='mask[location.pathString,id,hostname,domain,maxCpu,maxMemory,primaryIpAddress,primaryBackendIpAddress,operatingSystem.passwords,activeTransaction.transactionStatus.friendlyName]'
@@ -18,7 +14,7 @@ try:
     for vm in vms:
         location = vm['location'].get('pathString') if vm.get('location') else '-'
         passwd = vm['operatingSystem'].get('passwords')[0].get('password') if vm.get('operatingSystem') else '-'
-        osVer = vm['operatingSystem'].get('softwareLicense').get('softwareDescription').get('referenceCode') if vm.get('operatingSystem') else '-'
+        osVer = vm['operatingSystem'].get('softwareLicense').get('softwareDescription').get('referenceCode') if (vm.get('operatingSystem') and vm['operatingSystem'].get('softwareLicense')) else '-'
         transaction = vm['activeTransaction'].get('transactionStatus').get('friendlyName') if vm.get('activeTransaction') else '-'
         vmlist.add_row([location,vm['id'],vm['hostname'],vm['domain'],vm['maxCpu'],vm['maxMemory'],vm.get('primaryIpAddress'),vm.get('primaryBackendIpAddress'),passwd, osVer, transaction ])
     vmlist.align['Location'] = 'l'
