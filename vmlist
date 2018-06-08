@@ -13,7 +13,7 @@ try:
     vmlist = PrettyTable(['Location', 'ServerId', 'Hostname', 'Domain', 'CPU', 'Memory', 'PublicIP', 'PrivateIP', 'Password', 'OS', 'Transaction'])
     for vm in vms:
         location = vm['location'].get('pathString') if vm.get('location') else '-'
-        passwd = vm['operatingSystem'].get('passwords')[0].get('password') if vm.get('operatingSystem') else '-'
+        passwd = vm['operatingSystem'].get('passwords')[0].get('password') if vm.get('operatingSystem') and vm['operatingSystem'].get('passwords') else '-'
         osVer = vm['operatingSystem'].get('softwareLicense').get('softwareDescription').get('referenceCode') if (vm.get('operatingSystem') and vm['operatingSystem'].get('softwareLicense')) else '-'
         transaction = vm['activeTransaction'].get('transactionStatus').get('friendlyName') if vm.get('activeTransaction') else '-'
         vmlist.add_row([location,vm['id'],vm['hostname'],vm['domain'],vm['maxCpu'],vm['maxMemory'],vm.get('primaryIpAddress'),vm.get('primaryBackendIpAddress'),passwd, osVer, transaction ])
