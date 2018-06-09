@@ -1,0 +1,38 @@
+#!/usr/bin/env python
+
+import SoftLayer
+from prettytable import PrettyTable
+
+
+client = SoftLayer.create_client_from_env()
+accountClient = client['SoftLayer_Account']
+
+try:
+
+    listSL = PrettyTable(['Location', 'ServerId', 'Hostname', 'Domain', 'CPU', 'Memory', 'PublicIP', 'PrivateIP', 'Password', 'OS', 'Transaction'])
+    listSL.align['Location'] = 'l'
+    listSL.align['Hostname'] = 'r'
+    listSL.align['Domain'] = 'l'
+
+    vmmask='mask[location.pathString,id,hostname,domain,maxCpu,maxMemory,primaryIpAddress,primaryBackendIpAddress,operatingSystem.passwords,activeTransaction.transactionStatus.friendlyName]'
+    vms = accountClient.getVirtualGuests(mask=vmmask)
+    for vm in vms:
+        location = vm['location'].get('pathString') if vm.get('location') else '-'
+        passwd = vm['operatingSystem'].get('passwords')[0].get('password') if vm.get('operatingSystem') and vm['operatingSystem'].get('passwords') else '-'
+        osVer = vm['operatingSystem'].get('softwareLicense').get('softwareDescription').get('referenceCode') if (vm.get('operatingSystem') and vm['operatingSystem'].get('softwareLicense')) else '-'
+        transaction = vm['activeTransaction'].get('transactionStatus').get('friendlyName') if vm.get('activeTransaction') else '-'
+        listSL.add_row([location,vm['id'],vm['hostname'],vm['domain'],vm['maxCpu'],vm['maxMemory'],vm.get('primaryIpAddress'),vm.get('primaryBackendIpAddress'),passwd, osVer, transaction ])
+
+
+    hwmask='mask[location.pathString,id,hostname,domain,processorPhysicalCoreAmount,memoryCapacity,primaryIpAddress,primaryBackendIpAddress,operatingSystem.passwords,hardwareStatusId]'
+    hws = accountClient.getHardware(mask=hwmask)
+    for vm in hws:
+        location = vm['location'].get('pathString') if vm.get('location') else '-'
+        passwd = vm['operatingSystem'].get('passwords')[0].get('password') if vm.get('operatingSystem') and vm['operatingSystem'].get('passwords') else '-'
+        osVer = vm['operatingSystem'].get('softwareLicense').get('softwareDescription').get('referenceCode') if (vm.get('operatingSystem') and vm['operatingSystem'].get('softwareLicense')) else '-'
+        listSL.add_row([location,vm['id'],vm['hostname'],vm['domain'],vm['processorPhysicalCoreAmount'],vm['memoryCapacity'],vm.get('primaryIpAddress'),vm.get('primaryBackendIpAddress'),passwd, osVer, 'BMS: ' + str(vm.get('hardwareStatusId'))])
+
+    print(listSL.get_string(sortby='Location'))
+
+except SoftLayer.SoftLayerAPIError as e:
+    print("Error. " % (e.faultCode, e.faultString))
