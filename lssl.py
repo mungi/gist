@@ -24,23 +24,28 @@ class ListSoftlayer(object):
     bms_col = ['processorPhysicalCoreAmount', 'memoryCapacity', 'hardwareStatusId']
 
     def __init__(self):
-
         self.parse_options()
         self.set_column()
 
+        if self.args.sort not in self.Titles:
+            print('The SORT value is invalid. It must exactly match the item title.')
+            return
+
         client = SoftLayer.create_client_from_env()
         self.accountClient = client['SoftLayer_Account']
-
         self.list_servers()
 
     def set_column(self):
         if self.args.detail:
-            self.listSL = PrettyTable(['Location', 'ServerId', 'Hostname', 'Domain', 'CPU', 'Memory', 'PublicIP', 'PrivateIP', 'Password', 'OS', 'Transaction'])
+            self.Titles = ['Location', 'ServerId', 'Hostname', 'Domain', 'CPU', 'Memory', 'PublicIP', 'PrivateIP', 'Password', 'OS', 'Transaction']
+        else:
+            self.Titles = ['Location', 'ServerId', 'FQDN', 'CPU', 'Memory', 'PublicIP', 'PrivateIP']
+        self.listSL = PrettyTable(self.Titles)
+
+        if self.args.detail:
             self.listSL.align['Location'] = 'l'
             self.listSL.align['Hostname'] = 'r'
             self.listSL.align['Domain'] = 'l'
-        else:
-            self.listSL = PrettyTable(['Location', 'ServerId', 'FQDN', 'CPU', 'Memory', 'PublicIP', 'PrivateIP'])
 
     def parse_options(self):
         '''Parse all the arguments from the CLI'''
@@ -50,6 +55,8 @@ class ListSoftlayer(object):
                             help='Select Server Type (default: all)')
         parser.add_argument('-d', '--detail', action='store_true', default=False,
                             help='Display detail information like a Server Location, Password, Status (default: false)')
+        parser.add_argument('-s', '--sort', action='store', default='Location',
+                            help='Sort by the Column Title (default: Location)')
         self.args = parser.parse_args()
 
     def add_servers(self, type):
@@ -103,7 +110,6 @@ class ListSoftlayer(object):
             self.add_servers(self.VSI)
         if self.args.type == 'all' or  self.args.type == 'bm':
             self.add_servers(self.BMS)
-        print(self.listSL.get_string(sortby='Location'))
-
+        print(self.listSL.get_string(sortby=self.args.sort))
 
 ListSoftlayer()
