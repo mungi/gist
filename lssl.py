@@ -37,7 +37,7 @@ class ListSoftlayer(object):
 
     def set_column(self):
         if self.args.detail:
-            self.Titles = ['Location', 'ServerId', 'Hostname', 'Domain', 'CPU', 'Memory', 'PublicIP', 'PrivateIP', 'Password', 'OS', 'Transaction']
+            self.Titles = ['Location', 'ServerId', 'Hostname', 'Domain', 'CPU', 'Memory', 'PublicIP', 'PrivateIP', 'Password', 'OS', 'State']
         else:
             self.Titles = ['Location', 'ServerId', 'FQDN', 'CPU', 'Memory', 'PublicIP', 'PrivateIP']
         self.listSL = PrettyTable(self.Titles)
