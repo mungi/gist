@@ -48,15 +48,15 @@ class ListSoftlayer(object):
             self.listSL.align['Domain'] = 'l'
 
     def parse_options(self):
-        '''Parse all the arguments from the CLI'''
-
         parser = argparse.ArgumentParser(description='Print Server list of SoftLayer')
         parser.add_argument('-t', '--type', action='store', default='all',choices=['all','vm','bm'],
                             help='Select Server Type (default: all)')
         parser.add_argument('-d', '--detail', action='store_true', default=False,
-                            help='Display detail information like a Server Location, Password, Status (default: false)')
+                            help='Display detail information like a Server Location, Password, Status (default: False)')
         parser.add_argument('-s', '--sort', action='store', default='Location',
                             help='Sort by the Column Title (default: Location)')
+        parser.add_argument('-r', '--reversesort', action='store_true', default=False,
+                            help='Sorting in Descending Order (default: False)')
         self.args = parser.parse_args()
 
     def add_servers(self, type):
@@ -86,7 +86,7 @@ class ListSoftlayer(object):
                     srv['hostname'],
                     srv['domain'],
                     srv[type_col[0]],
-                    srv[type_col[1]],
+                    srv[type_col[1]] if type == self.BMS else int(int(srv[type_col[1]])/1024),
                     srv.get('primaryIpAddress'),
                     srv.get('primaryBackendIpAddress'),
                     passwd,
@@ -100,7 +100,7 @@ class ListSoftlayer(object):
                     srv['id'],
                     srv['fullyQualifiedDomainName'],
                     srv[type_col[0]],
-                    srv[type_col[1]],
+                    srv[type_col[1]] if type == self.BMS else int(int(srv[type_col[1]])/1024),
                     srv.get('primaryIpAddress'),
                     srv.get('primaryBackendIpAddress'),
                 ])
@@ -110,6 +110,6 @@ class ListSoftlayer(object):
             self.add_servers(self.VSI)
         if self.args.type == 'all' or  self.args.type == 'bm':
             self.add_servers(self.BMS)
-        print(self.listSL.get_string(sortby=self.args.sort))
+        print(self.listSL.get_string(sortby=self.args.sort, reversesort=self.args.reversesort))
 
 ListSoftlayer()
