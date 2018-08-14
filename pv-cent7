@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-#CentOS7 : Docker-CE, Python3.6, Net Utils, UTC
+# CentOS7 : Docker-CE, Python3.6, Net Utils, UTC
+# https://bit.ly/cent7pv
 set -x
 
 yum install -y epel-release
