@@ -16,7 +16,7 @@ ln -s $(which python3.6) /usr/bin/python3
 curl -sL https://bootstrap.pypa.io/get-pip.py | python3
 pip3 install docker-compose
 
-yum install -y tcpdump bind-utils mtr iperf3 nmon iftop net-tools
+yum install -y tcpdump bind-utils mtr iperf3 nmon iftop net-tools nmap
 
 timedatectl set-timezone UTC
 #timedatectl set-timezone Asia/Seoul
