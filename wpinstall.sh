@@ -3,13 +3,16 @@
 
 # DB, Wordpress 초기비번 정의
 INIT_ID="CloudZ"
-INIT_PASSWORD="CloudZ"
+INIT_PASSWORD="Cloud Z"
 #INIT_PASSWORD=$(date +%s | sha256sum | base64 | head -c 10)
 echo $INIT_PASSWORD > /root/INIT_PASSWORD
 
 # 필요 패키지 설치
-#yum update -y
+yum install -y epel-release
+yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+yum-config-manager --enable remi-php73
 yum install -y httpd php mariadb-server php-mysqlnd expect
+#yum install -y php-mcrypt php-cli php-gd php-curl php-ldap php-zip php-fileinfo
 
 chown -R apache:apache /var/www
 chmod 2775 /var/www
