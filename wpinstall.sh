@@ -3,7 +3,7 @@
 
 # DB, Wordpress 초기비번 정의
 INIT_ID="CloudZ"
-INIT_PASSWORD="Cloud Z"
+INIT_PASSWORD="CloudZ"
 #INIT_PASSWORD=$(date +%s | sha256sum | base64 | head -c 10)
 echo $INIT_PASSWORD > /root/INIT_PASSWORD
 
@@ -11,8 +11,11 @@ echo $INIT_PASSWORD > /root/INIT_PASSWORD
 yum install -y epel-release yum-utils
 yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 yum-config-manager --enable remi-php73
-yum install -y httpd php mariadb-server php-mysqlnd expect
+yum install -y httpd php php-mysqlnd expect
 #yum install -y php-mcrypt php-cli php-gd php-curl php-ldap php-zip php-fileinfo
+
+curl -sS https://downloads.mariadb.com/MariaDB/mariadb_repo_setup | sudo bash
+yum -y install MariaDB-server MariaDB-client
 
 chown -R apache:apache /var/www
 chmod 2775 /var/www
