@@ -8,8 +8,8 @@ INIT_PASSWORD="Cloud Z"
 echo $INIT_PASSWORD > /root/INIT_PASSWORD
 
 # 필요 패키지 설치
-yum install -y epel-release
-yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+yum install -y epel-release yum-utils
+yum install -y http://rpms.remirepo.net/enterprise/remi-release-7.rpm
 yum-config-manager --enable remi-php73
 yum install -y httpd php mariadb-server php-mysqlnd expect
 #yum install -y php-mcrypt php-cli php-gd php-curl php-ldap php-zip php-fileinfo
