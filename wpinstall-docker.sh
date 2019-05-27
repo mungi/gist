@@ -1,3 +1,7 @@
+#!/usr/bin/env bash
+# Wordpress install script by mungi
+
+set -x
 INIT_ID="CloudZ"
 INIT_PASSWORD="CloudZ"
 
@@ -43,7 +47,9 @@ volumes:
 EOF
 
 docker-compose up -d
-sleep 30
+
+timeout 300 bash -c 'while [[ "$(curl --insecure -s -o /dev/null -w ''%{http_code}'' http://localhost:80)" != "200" ]]; do sleep 5; done'
+
 MYIP=$(curl -s whatismyip.akamai.com)
 curl -s --data "dbname=wordpress&uname=$INIT_ID&pwd=$INIT_PASSWORD&dbhost=localhost&prefix=wp_&submit=Submit" \
 http://$MYIP/wp-admin/setup-config.php?step=2
