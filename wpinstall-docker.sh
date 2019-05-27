@@ -43,7 +43,7 @@ volumes:
 EOF
 
 docker-compose up -d
-
+sleep 30
 MYIP=$(curl -s whatismyip.akamai.com)
 curl -s --data "dbname=wordpress&uname=$INIT_ID&pwd=$INIT_PASSWORD&dbhost=localhost&prefix=wp_&submit=Submit" \
 http://$MYIP/wp-admin/setup-config.php?step=2
