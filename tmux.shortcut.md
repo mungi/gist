@@ -121,12 +121,6 @@ tmux 내에서 머릿문자'ctrl+b'를 누르고(전 ctrl+a로 변경해서 사�
 
 ## 설정 옵션
 
-    # 마우스 support - 마우스를 사용하려면 on으로 해주시면 됩니다.
-    * setw -g mode-mouse off  마우스 사용
-    * set -g mouse-select-pane off  마우스로 패널 선택
-    * set -g mouse-resize-pane off  마우스로 패널 리사이즈
-    * set -g mouse-select-window off   마우스로 윈도우 선택
-
     # 터미널 모드를 256컬러
     set -g default-terminal "screen-256color"
 
@@ -134,13 +128,35 @@ tmux 내에서 머릿문자'ctrl+b'를 누르고(전 ctrl+a로 변경해서 사�
     setw -g monitor-activity on
     set -g visual-activity on
 
-    # 위도우 리스트를 중앙정렬
-    set -g status-justify centre
+    # 마우스 사용 On 단축키 지정 : ^B m
+    bind m \
+      set -g mode-mouse on \;\
+      set -g mouse-resize-pane on \;\
+      set -g mouse-select-pane on \;\
+      set -g mouse-select-window on \;\
+      display 'Mouse: ON'
 
-    # 패널을 최대화했다가 다시 되돌리기
-    unbind Up bind Up new-window -d -n tmp \; swap-pane -s tmp.1 \; select-window -t tmp
-    unbind Down
-    bind Down last-window \; swap-pane -s tmp.1 \; kill-window -t tmp
+    # 마우스 사용 Off 단축키 지정 : ^B M
+    bind M \
+      set -g mode-mouse off \;\
+      set -g mouse-resize-pane off \;\
+      set -g mouse-select-pane off \;\
+      set -g mouse-select-window off \;\
+      display 'Mouse: OFF'
+
+    # 현재 창 Zoom 하기 단축키 지정 : ^B +
+    unbind +
+    bind + \
+      new-window -d -n tmux-zoom 'clear && echo TMUX ZOOM && read' \;\
+      swap-pane -s tmux-zoom.0 \;\
+      select-window -t tmux-zoom
+
+    # Zoom 한 창 복원 단축키 지정 : ^B +
+    unbind -
+    bind - \
+      last-window \;\
+      swap-pane -s tmux-zoom.0 \;\
+      kill-window -t tmux-zoom
 
 ## 참고자료:
 
