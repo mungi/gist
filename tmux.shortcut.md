@@ -144,9 +144,9 @@ tmux 내에서 머릿문자'ctrl+b'를 누르고(전 ctrl+a로 변경해서 사�
       set -g mouse-select-window off \;\
       display 'Mouse: OFF'
 
-    # 현재 창 Zoom 하기 단축키 지정 : ^B +
-    unbind +
-    bind + \
+    # 현재 창 Zoom 하기 단축키 지정 : ^B =
+    unbind =
+    bind = \
       new-window -d -n tmux-zoom 'clear && echo TMUX ZOOM && read' \;\
       swap-pane -s tmux-zoom.0 \;\
       select-window -t tmux-zoom
