@@ -123,14 +123,17 @@ Prefix(Ctrl-b)를 누르고 [ 를 누르면 카피모드가 됩니다. 그러면
     :  프롬프트
 
 ## 설정 옵션
-    # Prefix 변경 Ctrl-b 에서  'Ctrl+b로
-    unbind C-b
-    set-option -g prefix C-a
-    bind-key C-a send-prefix
+    # Prefix 변경 Ctrl-b 에서  Ctrl-a로 바꿀려면 아래 3줄 주석 해제
+    #unbind C-b
+    #set-option -g prefix C-a
+    #bind-key C-a send-prefix
 
     # 터미널 모드를 256컬러
     set -g default-terminal "screen-256color"
 
+    # UTF-8 설정 (Powerline 깨질 때)
+    setw -gq utf8 on
+    
     # 활동 알림 활성화
     setw -g monitor-activity on
     set -g visual-activity on
