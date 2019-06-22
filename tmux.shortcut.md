@@ -24,7 +24,7 @@
 
     tmux kill-session -t myname
 
-tmux 내에서 머릿문자'ctrl+b'를 누르고(전 ctrl+a로 변경해서 사용중)
+tmux 내에서 Prefix 인 'Ctrl-b'를 누르고
 
 ## 세션
 
@@ -53,8 +53,11 @@ tmux 내에서 머릿문자'ctrl+b'를 누르고(전 ctrl+a로 변경해서 사�
     ⍽  스페이스 - 레이아웃을 토글
     {  패널을 욎쪽으로 이동
     }  패널을 오른쪽으로 이동
+    
+    z Zoom 기능, 패널을 윈도 하나로 확대한다. 다시 'Prefix'-z 하면 해당 패널로 원복 된다.
 
 ## 패널 크기 조절하기
+    Prifix Key를 누르고 Ctrl를 누른 채로 방향키로 크기조절 가능
 
 레이아웃이 자동으로 정해주는 크기가 마음에 안들 때 패널크기를 조절하기위해서 사용합니다. 제 개인적으로는 거의 안씁니다만 알아두면 편리합니다. 여기 패널크기를 조절하는 기본적인 키들입니다.
 
@@ -71,7 +74,7 @@ tmux 내에서 머릿문자'ctrl+b'를 누르고(전 ctrl+a로 변경해서 사�
 
 ## 카피 모드:
 
-접두문자(ctrl+b)를 누르고 [ 를 누르면 카피모드가 됩니다. 그러면 커서키를 이용해서 화면을 이리저리 다니는 것이 가능합니다. 기본적으로 방향키로 지정되어 있습니다만 설정 파일을 이용해서 vim키로 변경을하면 윈도우나 패널 사이를 이동하기 위해서 손의 위치를 움직일 필요가 없어집니다.tmux 버퍼를 조작하기 위한 vi모드가 있습니다. 활성화 시키려면 아래의 라인을 .tmux.conf에 기술합니다.
+Prefix(Ctrl-b)를 누르고 [ 를 누르면 카피모드가 됩니다. 그러면 커서키를 이용해서 화면을 이리저리 다니는 것이 가능합니다. 기본적으로 방향키로 지정되어 있습니다만 설정 파일을 이용해서 vim키로 변경을하면 윈도우나 패널 사이를 이동하기 위해서 손의 위치를 움직일 필요가 없어집니다.tmux 버퍼를 조작하기 위한 vi모드가 있습니다. 활성화 시키려면 아래의 라인을 .tmux.conf에 기술합니다.
 
     setw -g mode-keys vi
 
@@ -120,6 +123,10 @@ tmux 내에서 머릿문자'ctrl+b'를 누르고(전 ctrl+a로 변경해서 사�
     :  프롬프트
 
 ## 설정 옵션
+    # Prefix 변경 Ctrl-b 에서  'Ctrl+b로
+    unbind C-b
+    set-option -g prefix C-a
+    bind-key C-a send-prefix
 
     # 터미널 모드를 256컬러
     set -g default-terminal "screen-256color"
@@ -144,22 +151,5 @@ tmux 내에서 머릿문자'ctrl+b'를 누르고(전 ctrl+a로 변경해서 사�
       set -g mouse-select-window off \;\
       display 'Mouse: OFF'
 
-    # 현재 창 Zoom 하기 단축키 지정 : ^B =
-    unbind =
-    bind = \
-      new-window -d -n tmux-zoom 'clear && echo TMUX ZOOM && read' \;\
-      swap-pane -s tmux-zoom.0 \;\
-      select-window -t tmux-zoom
-
-    # Zoom 한 창 복원 단축키 지정 : ^B +
-    unbind -
-    bind - \
-      last-window \;\
-      swap-pane -s tmux-zoom.0 \;\
-      kill-window -t tmux-zoom
-
-## 참고자료:
-
-* [tmux: Productive Mouse-Free Development](http://pragprog.com/book/bhtmux/tmux)
-* [How to reorder windows](http://superuser.com/questions/343572/tmux-how-do-i-reorder-my-windows)
-* [cheat sheet](http://cheat.errtheblog.com/s/tmux/)
+## 참조
+- https://www.hamvocke.com/blog/a-guide-to-customizing-your-tmux-conf/
